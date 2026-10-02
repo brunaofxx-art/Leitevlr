@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leite_Vlr | Radiante de Valorant: mira, AD AD, pixel peek e elo</title>
+<meta name="description" content="Dicas de Valorant com o Leite_Vlr, Radiante Top Alto: mira, AD AD, abertura de pixel, subir de elo, análise de tracker e VOD.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--panel:#0d0d0f;--line:#26262b;--txt:#ececf0;--mut:#9a9aa6;--red:#ff4655;--gold:#f6d98b;--cy:#5df2e0}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font:400 17px/1.65 Manrope,system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:'Big Shoulders Display',Impact,sans-serif;text-transform:uppercase;line-height:.95;letter-spacing:.01em}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(0,0,0,.72);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{font:900 26px 'Big Shoulders Display',sans-serif;letter-spacing:.04em}
+.logo b{color:var(--red)}
+nav ul{display:flex;gap:22px;list-style:none;padding:0;font-size:14px;color:var(--mut)}
+nav ul a:hover{color:#fff}
+.btn{display:inline-block;padding:13px 26px;font-weight:700;border:1px solid var(--red);background:var(--red);color:#fff;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);transition:.25s;cursor:pointer;font-family:inherit;font-size:16px}
+.btn:hover{background:#fff;color:#000;border-color:#fff;transform:translateY(-2px)}
+.btn.ghost{background:transparent;border-color:var(--gold);color:var(--gold)}
+.btn.ghost:hover{background:var(--gold);color:#000}
+/* hero */
+.hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:110px 0 70px;overflow:hidden;background:radial-gradient(60% 50% at 50% 40%,#2a0a10 0%,#000 70%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.28;mask-image:radial-gradient(circle at 50% 45%,#000,transparent 70%)}
+#cross{position:absolute;width:64px;height:64px;pointer-events:none;transform:translate(-50%,-50%);left:50%;top:45%;z-index:1;transition:left .12s ease-out,top .12s ease-out}
+#cross:before,#cross:after{content:"";position:absolute;background:var(--cy);box-shadow:0 0 8px var(--cy)}
+#cross:before{left:50%;top:0;width:2px;height:100%;margin-left:-1px;clip-path:polygon(0 0,100% 0,100% 38%,0 38%,0 62%,100% 62%,100% 100%,0 100%)}
+#cross:after{top:50%;left:0;height:2px;width:100%;margin-top:-1px;clip-path:polygon(0 0,38% 0,38% 100%,0 100%,62% 0,100% 0,100% 100%,62% 100%)}
+.hero .in{position:relative;z-index:2}
+.rank{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);color:var(--gold);padding:7px 18px;border-radius:99px;font-weight:700;font-size:14px;margin-bottom:22px;box-shadow:0 0 24px rgba(246,217,139,.25)}
+.rank i{width:9px;height:9px;background:var(--gold);transform:rotate(45deg)}
+h1{font-size:clamp(72px,17vw,220px);font-weight:900;color:#fff;position:relative;display:inline-block}
+h1 span{color:var(--red)}
+h1:before,h1:after{content:attr(data-t);position:absolute;inset:0;opacity:.0}
+h1:before{color:var(--cy);animation:glitch 5s infinite steps(1)}
+h1:after{color:var(--red);animation:glitch 5s infinite steps(1) .1s reverse}
+@keyframes glitch{0%,92%,100%{opacity:0;transform:none}93%{opacity:.8;transform:translate(-5px,2px)}95%{opacity:.8;transform:translate(5px,-2px)}97%{opacity:.8;transform:translate(-3px,0)}}
+.hero p.sub{max-width:600px;margin:20px auto 32px;color:var(--mut);font-size:19px}
+.hero .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.seq>*{opacity:0;transform:translateY(26px);animation:up .8s cubic-bezier(.2,.8,.2,1) forwards}
+.seq>*:nth-child(2){animation-delay:.15s}.seq>*:nth-child(3){animation-delay:.3s}.seq>*:nth-child(4){animation-delay:.45s}
+@keyframes up{to{opacity:1;transform:none}}
+.stats{display:flex;gap:40px;justify-content:center;margin-top:46px;flex-wrap:wrap}
+.stats b{display:block;font:900 40px 'Big Shoulders Display',sans-serif;color:var(--gold)}
+.stats small{color:var(--mut);font-size:14px}
+/* marquee */
+.mq{border-block:1px solid var(--line);background:var(--panel);overflow:hidden;white-space:nowrap;padding:14px 0}
+.mq div{display:inline-block;animation:mq 28s linear infinite;font:700 22px 'Big Shoulders Display',sans-serif;text-transform:uppercase;color:var(--mut)}
+.mq em{font-style:normal;color:var(--red);margin:0 22px}
+@keyframes mq{to{transform:translateX(-50%)}}
+section{padding:100px 0}
+.head{margin-bottom:44px;max-width:640px}
+.head h2{font-size:clamp(44px,7vw,84px)}
+.head p{color:var(--mut);margin-top:12px}
+/* gameplay */
+.vids{display:grid;grid-template-columns:1.6fr 1fr;gap:20px}
+.vid{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#1a0508,#050505);border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;transition:.3s}
+.vid:hover{border-color:var(--red);box-shadow:0 0 40px rgba(255,70,85,.2)}
+.vid .play{width:74px;height:74px;border-radius:50%;border:2px solid #fff;display:grid;place-items:center;font-size:26px;transition:.3s}
+.vid:hover .play{background:var(--red);border-color:var(--red);transform:scale(1.12)}
+.vid span{position:absolute;left:16px;bottom:12px;font-size:14px;color:var(--mut)}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.side{display:grid;gap:20px}
+.note{margin-top:16px;font-size:14px;color:var(--mut)}
+/* guides */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+details.card{background:var(--panel);border:1px solid var(--line);padding:26px;transition:.3s;position:relative}
+details.card:hover,details.card[open]{border-color:var(--red);transform:translateY(-4px)}
+details.card summary{list-style:none;cursor:pointer}
+details.card summary::-webkit-details-marker{display:none}
+.ico{font-size:30px;display:block;margin-bottom:10px}
+.card h3{font-size:34px;margin-bottom:6px}
+.card .pl{color:var(--red);font-size:14px;font-weight:700;margin-top:10px;display:block}
+.card[open] .pl:before{content:"Fechar";}
+.card .pl span{display:inline}
+.card[open] .pl span{display:none}
+.card ul{margin:18px 0 0 18px;color:#cfcfd6;font-size:15px;display:grid;gap:9px}
+.card p{color:var(--mut);font-size:15px}
+/* elo */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.tab{background:transparent;border:1px solid var(--line);color:var(--mut);padding:11px 20px;font:700 15px Manrope,sans-serif;cursor:pointer;transition:.2s}
+.tab:hover{color:#fff;border-color:#fff}
+.tab[aria-selected=true]{background:var(--red);border-color:var(--red);color:#fff}
+.panel{display:none;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--red);padding:32px;animation:up .45s both}
+.panel.on{display:block}
+.panel h3{font-size:42px;margin-bottom:10px}
+.panel .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;margin-top:18px}
+.panel h4{color:var(--gold);margin-bottom:8px;font-size:16px}
+.panel li{margin:0 0 7px 18px;color:#cfcfd6;font-size:15px}
+/* analysis */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.box{background:var(--panel);border:1px solid var(--line);padding:30px}
+.box h3{font-size:38px;margin-bottom:10px}
+.box ul{margin:14px 0 0 18px;color:#cfcfd6;font-size:15px}
+form{margin-top:34px;background:linear-gradient(135deg,#16070a,#050505);border:1px solid var(--red);padding:32px;display:grid;gap:14px}
+form h3{font-size:42px}
+form .r{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{font-size:14px;color:var(--mut);display:grid;gap:6px}
+input,select,textarea{background:#000;border:1px solid var(--line);color:#fff;padding:12px;font:inherit;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);outline:none}
+#ok{color:var(--cy);font-size:15px;min-height:22px}
+/* social */
+.soc{display:flex;gap:14px;flex-wrap:wrap}
+.soc a{border:1px solid var(--line);padding:14px 26px;font-weight:700;transition:.25s;background:var(--panel)}
+.soc a:hover{border-color:var(--red);color:var(--red);transform:translateY(-3px)}
+footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-size:14px;text-align:center}
+@media(max-width:780px){nav ul{display:none}.vids,.two,form .r{grid-template-columns:1fr}section{padding:72px 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.seq>*{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a href="#topo" class="logo">LEITE<b>_</b>VLR</a>
+  <ul>
+    <li><a href="#gameplay">Gameplay</a></li>
+    <li><a href="#guias">Guias</a></li>
+    <li><a href="#elo">Por elo</a></li>
+    <li><a href="#analise">Análises</a></li>
+    <li><a href="#redes">Redes</a></li>
+  </ul>
+  <a href="https://twitch.tv/leite_vlr" target="_blank" rel="noopener" class="btn" style="padding:9px 20px;font-size:14px">Ao vivo na Twitch</a>
+</div></nav>
+
+<header class="hero" id="topo">
+  <div class="grid"></div><div id="cross"></div>
+  <div class="in wrap">
+    <div class="seq">
+      <div class="rank"><i></i>Radiante · Top Alto</div>
+      <h1 data-t="LEITE_VLR">LEITE<span>_</span>VLR</h1>
+      <p class="sub">Aprenda a mirar melhor, se mover melhor e subir de elo com quem já chegou no topo do Valorant.</p>
+      <div class="cta">
+        <a href="#analise" class="btn">Pedir análise</a>
+        <a href="#guias" class="btn ghost">Ver guias</a>
+      </div>
+    </div>
+    <div class="stats seq">
+      <div><b>Radiante</b><small>Elo atual</small></div>
+      <div><b>Top alto</b><small>Posição no ranking</small></div>
+      <div><b>Ao vivo</b><small>twitch.tv/leite_vlr</small></div>
+    </div>
+  </div>
+</header>
+
+<div class="mq" aria-hidden="true"><div>
+  Mira <em>◆</em> AD AD <em>◆</em> Pixel peek <em>◆</em> Subir de elo <em>◆</em> Análise de tracker <em>◆</em> Análise de VOD <em>◆</em>
+  Mira <em>◆</em> AD AD <em>◆</em> Pixel peek <em>◆</em> Subir de elo <em>◆</em> Análise de tracker <em>◆</em> Análise de VOD <em>◆</em>
+</div></div>
+
+<section id="gameplay"><div class="wrap">
+  <div class="head"><h2>Gameplay</h2><p>Partidas de Radiante comentadas. Veja as decisões, não só os kills.</p></div>
+  <div class="vids">
+    <div class="vid" id="main-vid"><div class="play">▶</div><span>Vídeo principal: troque pelo seu embed</span></div>
+    <div class="side">
+      <div class="vid"><div class="play">▶</div><span>Clutch da semana</span></div>
+      <div class="vid"><div class="play">▶</div><span>Ranked comentada</span></div>
+    </div>
+  </div>
+  <p class="note">Para colocar seus vídeos, troque o conteúdo de cada bloco <code>.vid</code> por um <code>&lt;iframe&gt;</code> do YouTube ou da Twitch.</p>
+</div></section>
+
+<section id="guias" style="background:var(--panel);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="head"><h2>Guias para evoluir</h2><p>Toque em um card para abrir o guia.</p></div>
+  <div class="cards">
+    <details class="card"><summary><span class="ico">🎯</span><h3>Mira</h3><p>Posição da mira, flick, tracking e treino diário.</p><span class="pl"><span>Abrir guia</span></span></summary>
+      <ul>
+        <li>Mantenha a mira na altura da cabeça em todo ângulo comum.</li>
+        <li>Pré-mire o canto antes de aparecer, não depois.</li>
+        <li>Sensibilidade que permita girar 180° com o braço, sem tirar o mouse do pad.</li>
+        <li>Aquecimento de 10 a 15 min: tracking, flick, depois Deathmatch.</li>
+        <li>Pare de olhar a mira. Olhe o espaço onde o inimigo vai aparecer.</li>
+      </ul></details>
+    <details class="card"><summary><span class="ico">⚡</span><h3>AD AD</h3><p>Counter-strafe: parar a tempo de acertar o tiro.</p><span class="pl"><span>Abrir guia</span></span></summary>
+      <ul>
+        <li>Soltou a tecla de andar, aperte a tecla oposta rapidamente para zerar o movimento.</li>
+        <li>Só atire quando o personagem estiver parado. Atirar andando espalha o tiro.</li>
+        <li>Treine no Range com bots: A, D, tap contrário, tiro.</li>
+        <li>No duelo, faça strafe curto (peek e volta) para tirar o tempo do inimigo.</li>
+        <li>Varie o ritmo para não ficar previsível.</li>
+      </ul></details>
+    <details class="card"><summary><span class="ico">🔍</span><h3>Abertura de pixel</h3><p>Pixel peek: ver sem ser visto.</p><span class="pl"><span>Abrir guia</span></span></summary>
+      <ul>
+        <li>Abra o ângulo pouco a pouco com strafe curto e controlado.</li>
+        <li>Prefira ângulos que revelem só um inimigo por vez.</li>
+        <li>Se vê o inimigo antes dele te ver, você ganhou o duelo.</li>
+        <li>Combine com som: abra o pixel quando o passo parar.</li>
+        <li>Decore os pixels das suas posições favoritas em cada mapa.</li>
+      </ul></details>
+    <details class="card"><summary><span class="ico">📈</span><h3>Subir de elo</h3><p>Hábitos que fazem a diferença no ranked.</p><span class="pl"><span>Abrir guia</span></span></summary>
+      <ul>
+        <li>Jogue poucos agentes. Domine 2 ou 3.</li>
+        <li>Revise suas mortes: foi mira, posição ou decisão?</li>
+        <li>Economia e utilitário valem mais que highlight.</li>
+        <li>Comunique informação curta: local, quantos, vida.</li>
+        <li>Parou de render? Pare de jogar e descanse. Tilt custa pontos.</li>
+      </ul></details>
+  </div>
+</div></section>
+
+<section id="elo"><div class="wrap">
+  <div class="head"><h2>Travado em um elo?</h2><p>Escolha onde você está e veja o que mais importa nessa faixa.</p></div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-p="p1">Ferro a Bronze</button>
+    <button class="tab" role="tab" aria-selected="false" data-p="p2">Prata a Ouro</button>
+    <button class="tab" role="tab" aria-selected="false" data-p="p3">Platina a Diamante</button>
+    <button class="tab" role="tab" aria-selected="false" data-p="p4">Ascendente a Imortal</button>
+  </div>
+  <div class="panel on" id="p1"><h3>Ferro a Bronze</h3><p>Foco: fundamentos. Aqui, mira e posição resolvem quase tudo.</p>
+    <div class="cols"><div><h4>Treine</h4><ul><li>Posição da mira na altura da cabeça</li><li>Parar antes de atirar</li><li>Tiros curtos, não spray</li></ul></div>
+    <div><h4>Evite</h4><ul><li>Correr com faca em campo aberto</li><li>Atirar sem ver o inimigo</li><li>Jogar sozinho sem comunicação</li></ul></div></div></div>
+  <div class="panel" id="p2"><h3>Prata a Ouro</h3><p>Foco: consistência e utilitário. A mira já funciona, a decisão ainda falha.</p>
+    <div class="cols"><div><h4>Treine</h4><ul><li>Uso de habilidades antes do duelo</li><li>Trocar de posição após cada round</li><li>Economia de time</li></ul></div>
+    <div><h4>Evite</h4><ul><li>Peek isolado sem apoio</li><li>Gastar ult sem plano</li><li>Brigar com o time</li></ul></div></div></div>
+  <div class="panel" id="p3"><h3>Platina a Diamante</h3><p>Foco: tempo e jogo em equipe. Ganha quem toma melhor decisão.</p>
+    <div class="cols"><div><h4>Treine</h4><ul><li>Pixel peek e jiggle peek</li><li>Trade kill: sempre ter alguém para cobrir</li><li>Leitura de rotação inimiga</li></ul></div>
+    <div><h4>Evite</h4><ul><li>Repetir a mesma jogada</li><li>Peek sem informação</li><li>Ignorar o mini mapa</li></ul></div></div></div>
+  <div class="panel" id="p4"><h3>Ascendente a Imortal</h3><p>Foco: detalhes. Mira ótima é o mínimo; o diferencial é leitura e adaptação.</p>
+    <div class="cols"><div><h4>Treine</h4><ul><li>Revisão de VOD toda semana</li><li>Setups e defaults por mapa</li><li>Controle de ritmo do round</li></ul></div>
+    <div><h4>Evite</h4><ul><li>Jogar no automático</li><li>Ficar viciado em ranked sem revisar</li><li>Ignorar o pós-plant</li></ul></div></div></div>
+</div></section>
+
+<section id="analise" style="background:var(--panel);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="head"><h2>Análises</h2><p>Mande seu tracker ou seu VOD e receba um diagnóstico direto, com o que corrigir primeiro.</p></div>
+  <div class="two">
+    <div class="box"><h3>Análise de tracker</h3><p>Olho seus números e mostro onde você está perdendo pontos.</p>
+      <ul><li>Headshot %, ADR e K/D por agente</li><li>Seu pool de agentes e mapas</li><li>Pontos fortes e o que treinar</li></ul></div>
+    <div class="box"><h3>Análise de VOD</h3><p>Assisto suas partidas e aponto os erros de posição e decisão.</p>
+      <ul><li>Mortes evitáveis e seus motivos</li><li>Uso de utilitário e economia</li><li>Plano de treino para a semana</li></ul></div>
+  </div>
+
+  <form id="f">
+    <h3>Peça sua análise</h3>
+    <div class="r">
+      <label>Seu nick e tag<input name="nick" placeholder="Nome#BR1" required></label>
+      <label>Elo atual<select name="elo"><option>Ferro</option><option>Bronze</option><option>Prata</option><option>Ouro</option><option>Platina</option><option>Diamante</option><option>Ascendente</option><option>Imortal</option><option>Radiante</option></select></label>
+    </div>
+    <div class="r">
+      <label>Tipo de análise<select name="tipo"><option>Tracker</option><option>VOD</option><option>Os dois</option></select></label>
+      <label>Link do tracker ou do VOD<input name="link" type="url" placeholder="https://..."></label>
+    </div>
+    <label>Qual é a sua maior dificuldade?<textarea name="msg" rows="3" placeholder="Ex.: morro muito em duelo de peek"></textarea></label>
+    <button class="btn" type="submit">Copiar pedido e abrir Discord</button>
+    <div id="ok" role="status"></div>
+  </form>
+</div></section>
+
+<section id="redes"><div class="wrap">
+  <div class="head"><h2>Me acompanhe</h2><p>Lives, cortes e dicas em todas as redes como Leite_Vlr.</p></div>
+  <div class="soc">
+    <a href="https://twitch.tv/leite_vlr" target="_blank" rel="noopener">Twitch</a>
+    <a href="#" target="_blank" rel="noopener">YouTube</a>
+    <a href="#" target="_blank" rel="noopener">Instagram</a>
+    <a href="#" target="_blank" rel="noopener">TikTok</a>
+    <a href="#" target="_blank" rel="noopener">X / Twitter</a>
+    <a href="#" id="dc" target="_blank" rel="noopener">Discord</a>
+  </div>
+</div></section>
+
+<footer>© 2026 Leite_Vlr. Fã-site de conteúdo. Valorant é marca da Riot Games.</footer>
+
+<script>
+// Mira que segue o mouse no hero
+const hero=document.querySelector('.hero'),c=document.getElementById('cross');
+hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();c.style.left=(e.clientX-r.left)+'px';c.style.top=(e.clientY-r.top)+'px'});
+// Abas por elo
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===t.dataset.p));
+}));
+// Formulário: copia o pedido e abre o Discord (troque o link abaixo)
+const DISCORD='https://discord.gg/SEU-CONVITE';
+document.getElementById('dc').href=DISCORD;
+document.getElementById('f').addEventListener('submit',e=>{
+  e.preventDefault();const d=new FormData(e.target);
+  const txt=`Pedido de análise\nNick: ${d.get('nick')}\nElo: ${d.get('elo')}\nTipo: ${d.get('tipo')}\nLink: ${d.get('link')||'-'}\nDificuldade: ${d.get('msg')||'-'}`;
+  const done=()=>{document.getElementById('ok').textContent='Pedido copiado. Cole no Discord para enviar.';window.open(DISCORD,'_blank')};
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(done).catch(()=>{document.getElementById('ok').textContent='Não consegui copiar. Envie estes dados no Discord: '+txt.replace(/\n/g,' | ')});
+});
+</script>
+</body>
+</html>
