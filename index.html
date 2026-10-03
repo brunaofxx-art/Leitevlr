@@ -114,7 +114,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);outline:none}
 .soc a:hover{border-color:var(--red);color:var(--red);transform:translateY(-3px)}
 footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-size:14px;text-align:center}
 @media(max-width:780px){nav ul{display:none}.vids,.two,form .r{grid-template-columns:1fr}section{padding:72px 0}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.seq>*{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.seq>*{opacity:1;transform:none}.mq div{animation:mq 60s linear infinite!important}}
 </style>
 </head>
 <body>
@@ -151,10 +151,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
   </div>
 </header>
 
-<div class="mq" aria-hidden="true"><div>
-  Mira <em>◆</em> AD AD <em>◆</em> Pixel peek <em>◆</em> Subir de elo <em>◆</em> Análise de tracker <em>◆</em> Análise de VOD <em>◆</em>
-  Mira <em>◆</em> AD AD <em>◆</em> Pixel peek <em>◆</em> Subir de elo <em>◆</em> Análise de tracker <em>◆</em> Análise de VOD <em>◆</em>
-</div></div>
+<div class="mq" aria-hidden="true"><div id="mqt"></div></div>
 
 <section id="gameplay"><div class="wrap">
   <div class="head"><h2>Gameplay</h2><p>Partidas de Radiante comentadas. Veja as decisões, não só os kills.</p></div>
@@ -268,6 +265,10 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
 <footer>© 2026 Leite_Vlr. Fã-site de conteúdo. Valorant é marca da Riot Games.</footer>
 
 <script>
+// Faixa em rolagem: repete o texto 8x (a animação anda metade, então não há vão)
+const itens=['Mira','AD AD','Pixel peek','Subir de elo','Análise de tracker','Análise de VOD'];
+const grupo=itens.map(t=>t+'<em>◆</em>').join('');
+document.getElementById('mqt').innerHTML=grupo.repeat(8);
 // Mira que segue o mouse no hero
 const hero=document.querySelector('.hero'),c=document.getElementById('cross');
 hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();c.style.left=(e.clientX-r.left)+'px';c.style.top=(e.clientY-r.top)+'px'});
