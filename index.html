@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#000;--panel:#0d0d0f;--line:#26262b;--txt:#ececf0;--mut:#9a9aa6;--red:#ff4655;--gold:#f6d98b;--cy:#5df2e0}
+:root{--bg:#000;--panel:rgba(10,10,12,.8);--line:#26262b;--txt:#ececf0;--mut:#9a9aa6;--red:#ff4655;--gold:#f6d98b;--cy:#5df2e0}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font:400 17px/1.65 Manrope,system-ui,sans-serif;overflow-x:hidden}
@@ -29,7 +29,11 @@ nav ul a:hover{color:#fff}
 .btn.ghost{background:transparent;border-color:var(--gold);color:var(--gold)}
 .btn.ghost:hover{background:var(--gold);color:#000}
 /* hero */
-.hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:110px 0 70px;overflow:hidden;background:radial-gradient(60% 50% at 50% 40%,#2a0a10 0%,#000 70%)}
+.hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:110px 0 70px;overflow:hidden;background:radial-gradient(60% 50% at 50% 40%,rgba(42,10,16,.7) 0%,transparent 70%)}
+.bg{position:fixed;inset:0;z-index:-1;background:#000}
+.bg video,.bg canvas{position:absolute;inset:0;width:100%;height:100%}
+.bg video{object-fit:cover;object-position:center;opacity:.4}
+.bg .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25) 40%,rgba(0,0,0,.7))}
 .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.28;mask-image:radial-gradient(circle at 50% 45%,#000,transparent 70%)}
 #cross{position:absolute;width:64px;height:64px;pointer-events:none;transform:translate(-50%,-50%);left:50%;top:45%;z-index:1;transition:left .12s ease-out,top .12s ease-out}
 #cross:before,#cross:after{content:"";position:absolute;background:var(--cy);box-shadow:0 0 8px var(--cy)}
@@ -119,6 +123,13 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
 </head>
 <body>
 
+<div class="bg" aria-hidden="true">
+  <!-- Coloque seu vídeo na raiz do repositório com o nome jett.mp4 (e, se quiser, uma imagem jett.jpg) -->
+  <video id="jv" autoplay muted loop playsinline preload="metadata" poster="jett.jpg"><source src="jett.mp4" type="video/mp4"></video>
+  <canvas id="wind"></canvas>
+  <div class="shade"></div>
+</div>
+
 <nav><div class="wrap">
   <a href="#topo" class="logo">LEITE<b>_</b>VLR</a>
   <ul>
@@ -136,7 +147,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
   <div class="in wrap">
     <div class="seq">
       <div class="rank"><i></i>Radiante · Top Alto</div>
-      <h1 data-t="LEITE VLR">LEITE<span>_</span>VLR</h1>
+      <h1 data-t="LEITE_VLR">LEITE<span>_</span>VLR</h1>
       <p class="sub">Aprenda a mirar melhor, se mover melhor e subir de elo com quem já chegou no topo do Valorant.</p>
       <div class="cta">
         <a href="#analise" class="btn">Pedir análise</a>
@@ -269,6 +280,22 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
 const itens=['Mira','AD AD','Pixel peek','Subir de elo','Análise de tracker','Análise de VOD'];
 const grupo=itens.map(t=>t+'<em>◆</em>').join('');
 document.getElementById('mqt').innerHTML=grupo.repeat(8);
+// Fundo: rajadas de vento (animação própria) + vídeo opcional jett.mp4
+const cv=document.getElementById('wind'),cx=cv.getContext('2d');
+let W,H,L=[];
+const fit=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;L=Array.from({length:Math.min(70,W/18|0)},()=>mk(true))};
+const mk=r=>({x:Math.random()*W,y:r?Math.random()*H:-40,l:60+Math.random()*180,s:3+Math.random()*7,a:.05+Math.random()*.22,c:Math.random()<.2?'255,70,85':'210,245,255'});
+addEventListener('resize',fit);fit();
+const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+(function draw(){
+  cx.clearRect(0,0,W,H);
+  for(const p of L){
+    cx.strokeStyle=`rgba(${p.c},${p.a})`;cx.lineWidth=1.4;
+    cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(p.x-p.l*.35,p.y-p.l);cx.stroke();
+    if(!still){p.x+=p.s*.35;p.y+=p.s;if(p.y-p.l>H||p.x>W+80)Object.assign(p,mk(false),{x:Math.random()*W})}
+  }
+  requestAnimationFrame(draw);
+})();
 // Mira que segue o mouse no hero
 const hero=document.querySelector('.hero'),c=document.getElementById('cross');
 hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();c.style.left=(e.clientX-r.left)+'px';c.style.top=(e.clientY-r.top)+'px'});
