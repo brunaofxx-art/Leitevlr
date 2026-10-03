@@ -292,7 +292,9 @@ const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
   for(const p of L){
     cx.strokeStyle=`rgba(${p.c},${p.a})`;cx.lineWidth=1.4;
     cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(p.x-p.l*.35,p.y-p.l);cx.stroke();
-    if(!still){p.x+=p.s*.35;p.y+=p.s;if(p.y-p.l>H||p.x>W+80)Object.assign(p,mk(false),{x:Math.random()*W})}
+    const k=still?.45:1;
+    p.x+=p.s*.35*k;p.y+=p.s*k;
+    if(p.y-p.l>H||p.x>W+80)Object.assign(p,mk(false),{x:Math.random()*W});
   }
   requestAnimationFrame(draw);
 })();
