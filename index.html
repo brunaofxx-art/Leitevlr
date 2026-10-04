@@ -42,12 +42,18 @@ nav ul a:hover{color:#fff}
 .hero .in{position:relative;z-index:2}
 .rank{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);color:var(--gold);padding:7px 18px;border-radius:99px;font-weight:700;font-size:14px;margin-bottom:22px;box-shadow:0 0 24px rgba(246,217,139,.25)}
 .rank i{width:9px;height:9px;background:var(--gold);transform:rotate(45deg)}
-h1{font-size:clamp(72px,17vw,220px);font-weight:900;color:#fff;position:relative;display:inline-block}
-h1 span{color:var(--red)}
-h1:before,h1:after{content:attr(data-t);position:absolute;inset:0;opacity:.0}
-h1:before{color:var(--cy);animation:glitch 5s infinite steps(1)}
-h1:after{color:var(--red);animation:glitch 5s infinite steps(1) .1s reverse}
-@keyframes glitch{0%,92%,100%{opacity:0;transform:none}93%{opacity:.8;transform:translate(-5px,2px)}95%{opacity:.8;transform:translate(5px,-2px)}97%{opacity:.8;transform:translate(-3px,0)}}
+h1{font-size:clamp(64px,16vw,210px);font-weight:900;color:#fff;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;filter:drop-shadow(0 0 22px rgba(93,242,224,.28))}
+h1 .w2{background:linear-gradient(100deg,#fff 0%,var(--cy) 35%,#fff 55%,var(--cy) 80%,#fff 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4.5s linear infinite}
+@keyframes shine{to{background-position:-220% 0}}
+h1 .blade{display:inline-block;width:.17em;height:.82em;margin:0 .14em;background:linear-gradient(180deg,#fff,var(--cy) 55%,var(--red));clip-path:polygon(50% 0,100% 58%,50% 100%,0 58%);transform:skewX(-14deg);animation:stab 3.6s ease-in-out infinite}
+@keyframes stab{0%,100%{transform:skewX(-14deg) translateY(0)}50%{transform:skewX(-14deg) translateY(-.06em)}}
+.eyebrow{display:flex;align-items:center;justify-content:center;gap:16px;letter-spacing:.4em;font-size:13px;font-weight:700;color:var(--cy);text-transform:uppercase;margin-bottom:10px}
+.eyebrow:before,.eyebrow:after{content:"";width:56px;height:1px;background:linear-gradient(90deg,transparent,var(--cy))}
+.eyebrow:after{transform:scaleX(-1)}
+.bubbles{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.bub{position:absolute;bottom:-60px;padding:9px 16px;border-radius:18px;border:1px solid rgba(93,242,224,.38);background:rgba(8,14,16,.55);backdrop-filter:blur(6px);color:#e6fffb;font-size:14px;font-weight:600;text-align:center;line-height:1.35;width:max-content;box-shadow:0 0 22px rgba(93,242,224,.14);opacity:0;animation:rise var(--d,11s) linear forwards}
+.bub.r{border-color:rgba(255,70,85,.5);box-shadow:0 0 22px rgba(255,70,85,.16)}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}10%{opacity:1}85%{opacity:.9}100%{transform:translate(var(--x,0),-105vh);opacity:0}}
 .hero p.sub{max-width:600px;margin:20px auto 32px;color:var(--mut);font-size:19px}
 .hero .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .seq>*{opacity:0;transform:translateY(26px);animation:up .8s cubic-bezier(.2,.8,.2,1) forwards}
@@ -117,8 +123,19 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);outline:none}
 .soc a{border:1px solid var(--line);padding:14px 26px;font-weight:700;transition:.25s;background:var(--panel)}
 .soc a:hover{border-color:var(--red);color:var(--red);transform:translateY(-3px)}
 footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-size:14px;text-align:center}
+[hidden]{display:none!important}
+.btn.on{background:#e91916;border-color:#e91916;color:#fff;animation:pulse 1.6s infinite}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#fff;margin-right:8px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(233,25,22,.6)}50%{box-shadow:0 0 0 12px rgba(233,25,22,0)}}
+.sub-h{font-size:40px;margin:56px 0 20px}
+.clips{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.clip{display:block;background:var(--panel);border:1px solid var(--line);transition:.3s;overflow:hidden}
+.clip:hover{border-color:var(--red);transform:translateY(-4px)}
+.clip img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.clip b{display:block;padding:12px 14px 2px;font-size:15px}
+.clip small{display:block;padding:0 14px 12px;color:var(--mut)}
 @media(max-width:780px){nav ul{display:none}.vids,.two,form .r{grid-template-columns:1fr}section{padding:72px 0}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.seq>*{opacity:1;transform:none}.mq div{animation:mq 60s linear infinite!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.seq>*{opacity:1;transform:none}.mq div{animation:mq 60s linear infinite!important}.bub{animation:rise var(--d,11s) linear forwards!important}}
 </style>
 </head>
 <body>
@@ -139,15 +156,16 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
     <li><a href="#analise">Análises</a></li>
     <li><a href="#redes">Redes</a></li>
   </ul>
-  <a href="https://twitch.tv/leite_vlr" target="_blank" rel="noopener" class="btn" style="padding:9px 20px;font-size:14px">Ao vivo na Twitch</a>
+  <a id="tw" href="https://twitch.tv/leite_vlr" target="_blank" rel="noopener" class="btn" style="padding:9px 20px;font-size:14px">Twitch</a>
 </div></nav>
 
 <header class="hero" id="topo">
   <div class="grid"></div><div id="cross"></div>
+  <div class="bubbles" id="bubbles" aria-hidden="true"></div>
   <div class="in wrap">
     <div class="seq">
-      <div class="rank"><i></i>Radiante · Top Alto</div>
-      <h1 data-t="LEITE_VLR">LEITE<span>_</span>VLR</h1>
+      <div class="eyebrow">Valorant · Dicas · Análises</div>
+      <h1 aria-label="Leite VLR"><span class="w1">LEITE</span><i class="blade" aria-hidden="true"></i><span class="w2">VLR</span></h1>
       <p class="sub">Aprenda a mirar melhor, se mover melhor e subir de elo com quem já chegou no topo do Valorant.</p>
       <div class="cta">
         <a href="#analise" class="btn">Pedir análise</a>
@@ -166,6 +184,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
 
 <section id="gameplay"><div class="wrap">
   <div class="head"><h2>Gameplay</h2><p>Partidas de Radiante comentadas. Veja as decisões, não só os kills.</p></div>
+  <div id="livebox" hidden style="margin-bottom:24px"></div>
   <div class="vids">
     <div class="vid" id="main-vid"><div class="play">▶</div><span>Vídeo principal: troque pelo seu embed</span></div>
     <div class="side">
@@ -174,6 +193,10 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
     </div>
   </div>
   <p class="note">Para colocar seus vídeos, troque o conteúdo de cada bloco <code>.vid</code> por um <code>&lt;iframe&gt;</code> do YouTube ou da Twitch.</p>
+  <div id="clipsbox" hidden>
+    <h3 class="sub-h">Clips da live</h3>
+    <div class="clips" id="clips"></div>
+  </div>
 </div></section>
 
 <section id="guias" style="background:var(--panel);border-block:1px solid var(--line)"><div class="wrap">
@@ -276,6 +299,36 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
 <footer>© 2026 Leite_Vlr. Fã-site de conteúdo. Valorant é marca da Riot Games.</footer>
 
 <script>
+// Twitch: selo AO VIVO + player + clips automáticos (via /api/twitch)
+(async()=>{
+  const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x)e.textContent=x;return e};
+  try{
+    const r=await fetch('/api/twitch');if(!r.ok)throw 0;
+    const d=await r.json();if(d.error)throw 0;
+    if(d.live){
+      const tw=document.getElementById('tw');
+      tw.classList.add('on');tw.textContent='';
+      tw.append(el('i','dot'),'AO VIVO · '+d.viewers);
+      const box=document.getElementById('livebox');
+      const v=el('div','vid');v.style.aspectRatio='16/9';
+      const f=document.createElement('iframe');
+      f.src='https://player.twitch.tv/?channel=leite_vlr&parent='+location.hostname+'&muted=true';
+      f.allowFullscreen=true;f.title='Live do Leite_Vlr';v.append(f);
+      box.append(v,el('p','note','Ao vivo agora'+(d.game?' · '+d.game:'')+(d.title?' · '+d.title:'')));
+      box.hidden=false;
+    }
+    if(d.clips&&d.clips.length){
+      const g=document.getElementById('clips');
+      d.clips.forEach(c=>{
+        const a=el('a','clip');a.href=c.url;a.target='_blank';a.rel='noopener';
+        const i=document.createElement('img');i.src=c.thumb;i.alt='';i.loading='lazy';
+        a.append(i,el('b','',c.title),el('small','',c.views.toLocaleString('pt-BR')+' views · '+c.duration+'s'));
+        g.append(a);
+      });
+      document.getElementById('clipsbox').hidden=false;
+    }
+  }catch(e){/* sem API configurada: o site segue normal */}
+})();
 // Faixa em rolagem: repete o texto 8x (a animação anda metade, então não há vão)
 const itens=['Mira','AD AD','Pixel peek','Subir de elo','Análise de tracker','Análise de VOD'];
 const grupo=itens.map(t=>t+'<em>◆</em>').join('');
@@ -298,6 +351,24 @@ const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
   }
   requestAnimationFrame(draw);
 })();
+// Balões subindo com frases sobre o tema do site
+const frases=['🎯 Mira na altura da cabeça','⚡ AD AD: pare antes de atirar','🔍 Pixel peek: veja sem ser visto','📊 Mande seu tracker para análise','💨 Radiante · Top alto','🧠 Tilt custa elo. Respira.','🎙️ Comunique: local, quantos, vida','🔥 Treino de hoje é o elo de amanhã','🎬 Revisar VOD acelera sua evolução','🎮 Domine 2 ou 3 agentes'];
+const hb=document.getElementById('bubbles');let fi=Math.floor(Math.random()*frases.length),lado=0;
+function bolha(){
+  if(document.hidden||hb.children.length>2)return;
+  const b=document.createElement('div'),d=9+Math.random()*5;
+  b.className='bub'+(Math.random()<.25?' r':'');
+  b.textContent=frases[fi++%frases.length];
+  b.style.setProperty('--d',d+'s');
+  b.style.setProperty('--x',(Math.random()*30-15)+'px');
+  hb.appendChild(b);
+  const W=hb.clientWidth,margem=Math.max(120,(W-Math.min(980,W*.66))/2);
+  b.style.maxWidth=(margem-24)+'px';
+  lado^=1;
+  b.style.left=(lado?10:Math.max(10,W-b.offsetWidth-10))+'px';
+  setTimeout(()=>b.remove(),d*1000+300);
+}
+bolha();setInterval(bolha,7000);
 // Mira que segue o mouse no hero
 const hero=document.querySelector('.hero'),c=document.getElementById('cross');
 hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();c.style.left=(e.clientX-r.left)+'px';c.style.top=(e.clientY-r.top)+'px'});
