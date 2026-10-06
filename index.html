@@ -269,6 +269,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
   </div>
 
   <form id="f">
+    <input name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
     <h3>Peça sua análise</h3>
     <div class="r">
       <label>Seu nick e tag<input name="nick" placeholder="Nome#BR1" required></label>
@@ -279,7 +280,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mut);font-siz
       <label>Link do tracker ou do VOD<input name="link" type="url" placeholder="https://..."></label>
     </div>
     <label>Qual é a sua maior dificuldade?<textarea name="msg" rows="3" placeholder="Ex.: morro muito em duelo de peek"></textarea></label>
-    <button class="btn" type="submit">Copiar pedido e abrir Discord</button>
+    <button class="btn" type="submit">Enviar pedido</button>
     <div id="ok" role="status"></div>
   </form>
 </div></section>
@@ -380,11 +381,21 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 // Formulário: copia o pedido e abre o Discord (troque o link abaixo)
 const DISCORD='https://discord.gg/SEU-CONVITE';
 document.getElementById('dc').href=DISCORD;
-document.getElementById('f').addEventListener('submit',e=>{
-  e.preventDefault();const d=new FormData(e.target);
-  const txt=`Pedido de análise\nNick: ${d.get('nick')}\nElo: ${d.get('elo')}\nTipo: ${d.get('tipo')}\nLink: ${d.get('link')||'-'}\nDificuldade: ${d.get('msg')||'-'}`;
-  const done=()=>{document.getElementById('ok').textContent='Pedido copiado. Cole no Discord para enviar.';window.open(DISCORD,'_blank')};
-  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(done).catch(()=>{document.getElementById('ok').textContent='Não consegui copiar. Envie estes dados no Discord: '+txt.replace(/\n/g,' | ')});
+document.getElementById('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const f=e.target,d=Object.fromEntries(new FormData(f)),ok=document.getElementById('ok'),btn=f.querySelector('button');
+  btn.disabled=true;ok.textContent='Enviando...';
+  try{
+    const r=await fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+    if(r.status===429){ok.textContent='Você já enviou vários pedidos. Tente de novo mais tarde.';return}
+    if(!r.ok)throw 0;
+    ok.textContent='Pedido enviado! Vou analisar e te respondo em breve.';f.reset();
+  }catch(_){
+    // Plano B: se o envio falhar, copia o pedido e abre o Discord
+    const txt=`Pedido de análise\nNick: ${d.nick}\nElo: ${d.elo}\nTipo: ${d.tipo}\nLink: ${d.link||'-'}\nDificuldade: ${d.msg||'-'}`;
+    const done=()=>{ok.textContent='Não consegui enviar direto. Copiei o pedido: cole no Discord.';window.open(DISCORD,'_blank')};
+    (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(done).catch(()=>{ok.textContent='Não consegui enviar. Mande estes dados no Discord: '+txt.replace(/\n/g,' | ')});
+  }finally{btn.disabled=false}
 });
 </script>
 </body>

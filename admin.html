@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Pedidos | Leite_Vlr</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--pn:#0d0d10;--ln:#26262b;--tx:#ececf0;--mu:#9a9aa6;--rd:#ff4655;--gd:#f6d98b;--cy:#5df2e0}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{background:radial-gradient(60% 40% at 50% 0,#2a0a10 0,#000 70%) #000;color:var(--tx);font:16px/1.6 Manrope,system-ui,sans-serif;min-height:100vh}
+h1,h2{font-family:'Big Shoulders Display',Impact,sans-serif;text-transform:uppercase;line-height:1}
+.wrap{max-width:940px;margin:0 auto;padding:30px 20px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+.top h1{font-size:44px}.top h1 b{color:var(--rd)}
+.b{background:transparent;border:1px solid var(--ln);color:var(--tx);padding:8px 14px;font:700 13px Manrope,sans-serif;cursor:pointer;transition:.2s}
+.b:hover{border-color:#fff}.b.p{background:var(--rd);border-color:var(--rd)}.b.p:hover{background:#fff;color:#000}
+.b.d:hover{border-color:var(--rd);color:var(--rd)}
+.box{background:var(--pn);border:1px solid var(--ln);padding:30px}
+#login{max-width:380px;margin:12vh auto 0;border-top:3px solid var(--rd)}
+#login h1{font-size:46px;margin-bottom:6px}
+#login p{color:var(--mu);font-size:14px;margin-bottom:18px}
+label{display:grid;gap:6px;font-size:13px;color:var(--mu);margin-bottom:14px}
+input{background:#000;border:1px solid var(--ln);color:#fff;padding:12px;font:inherit;width:100%}
+input:focus{border-color:var(--gd);outline:none}
+.err{color:var(--rd);font-size:14px;min-height:20px;margin-top:10px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tabs .b[aria-pressed=true]{background:var(--rd);border-color:var(--rd)}
+.card{background:var(--pn);border:1px solid var(--ln);border-left:4px solid var(--ln);padding:20px;margin-bottom:14px}
+.card.novo{border-left-color:var(--rd)}.card.analisando{border-left-color:var(--gd)}.card.concluido{border-left-color:var(--cy);opacity:.7}
+.row{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.nick{font:900 30px 'Big Shoulders Display',sans-serif;text-transform:uppercase}
+.tag{font-size:12px;font-weight:700;border:1px solid var(--ln);padding:2px 10px;border-radius:99px;color:var(--gd)}
+.dt{margin-left:auto;font-size:13px;color:var(--mu)}
+.msg{margin:10px 0;color:#d4d4da;white-space:pre-wrap;word-break:break-word}
+.lk{color:var(--cy);word-break:break-all;font-size:14px}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.empty{color:var(--mu);text-align:center;padding:50px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<form id="login" class="box" autocomplete="on">
+  <h1>Área do dono</h1><p>Entre para ver os pedidos de análise.</p>
+  <label>Usuário ou e-mail<input id="u" name="username" autocomplete="username" required></label>
+  <label>Senha<input id="pw" name="password" type="password" autocomplete="current-password" required></label>
+  <button class="b p" style="width:100%;padding:13px;font-size:15px">Entrar</button>
+  <div class="err" id="e1" role="alert"></div>
+</form>
+
+<div id="panel" hidden>
+  <div class="top">
+    <h1>Pedidos<b>_</b>análise</h1>
+    <div><button class="b" id="rf">Atualizar</button> <button class="b d" id="out">Sair</button></div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="b" data-f="todos" aria-pressed="true">Todos <span></span></button>
+    <button class="b" data-f="novo" aria-pressed="false">Novos <span></span></button>
+    <button class="b" data-f="analisando" aria-pressed="false">Em análise <span></span></button>
+    <button class="b" data-f="concluido" aria-pressed="false">Concluídos <span></span></button>
+  </div>
+  <div id="list"></div>
+  <div class="err" id="e2"></div>
+</div>
+
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+let all=[],filtro='todos';
+
+async function api(m,b){
+  const r=await fetch('/api/admin',{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});
+  if(r.status===401)throw 401;if(!r.ok)throw r.status;return r.json();
+}
+async function load(){
+  try{const d=await api('GET');all=d.pedidos;$('#login').hidden=true;$('#panel').hidden=false;$('#e2').textContent='';render()}
+  catch(e){if(e===401){$('#panel').hidden=true;$('#login').hidden=false}else{$('#e2').textContent='Não consegui carregar os pedidos. Confira o banco de dados no Vercel.'}}
+}
+function render(){
+  const n={todos:all.length,novo:0,analisando:0,concluido:0};all.forEach(p=>{if(n[p.status]!=null)n[p.status]++});
+  document.querySelectorAll('#tabs .b').forEach(b=>{b.querySelector('span').textContent='('+n[b.dataset.f]+')';b.setAttribute('aria-pressed',b.dataset.f===filtro)});
+  document.title=(n.novo?'('+n.novo+') ':'')+'Pedidos | Leite_Vlr';
+  const L=$('#list');L.textContent='';
+  const vis=all.filter(p=>filtro==='todos'||p.status===filtro);
+  if(!vis.length){L.append(h('div','empty','Nenhum pedido aqui ainda.'));return}
+  vis.forEach(p=>{
+    const c=h('div','card '+p.status),r=h('div','row');
+    r.append(h('span','nick',p.nick),h('span','tag',p.elo),h('span','tag',p.tipo),h('span','dt',new Date(p.criado).toLocaleString('pt-BR')));
+    c.append(r);
+    if(p.msg)c.append(h('div','msg',p.msg));
+    if(p.link){const a=h('a','lk',p.link);a.href=p.link;a.target='_blank';a.rel='noopener noreferrer';c.append(a)}
+    const A=h('div','act');
+    const bt=(t,fn,cl)=>{const b=h('button','b '+(cl||''),t);b.onclick=fn;A.append(b)};
+    if(p.link)bt('Abrir link',()=>window.open(p.link,'_blank','noopener'));
+    if(p.status!=='analisando')bt('Em análise',()=>mud(p.id,'analisando'),'p');
+    if(p.status!=='concluido')bt('Concluir',()=>mud(p.id,'concluido'));
+    if(p.status!=='novo')bt('Reabrir',()=>mud(p.id,'novo'));
+    bt('Copiar',()=>navigator.clipboard&&navigator.clipboard.writeText(`${p.nick} | ${p.elo} | ${p.tipo}\n${p.link||''}\n${p.msg||''}`));
+    bt('Apagar',async()=>{if(confirm('Apagar este pedido?')){try{await api('DELETE',{id:p.id});load()}catch(e){load()}}},'d');
+    c.append(A);L.append(c);
+  });
+}
+async function mud(id,status){try{await api('PATCH',{id,status});load()}catch(e){load()}}
+
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('.b');if(b){filtro=b.dataset.f;render()}});
+$('#rf').onclick=load;
+$('#out').onclick=async()=>{await fetch('/api/login',{method:'DELETE'});all=[];$('#panel').hidden=true;$('#login').hidden=false;$('#pw').value=''};
+$('#login').addEventListener('submit',async e=>{
+  e.preventDefault();$('#e1').textContent='';
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:$('#u').value,pass:$('#pw').value})});
+    if(r.ok){$('#pw').value='';load()}
+    else if(r.status===429)$('#e1').textContent='Muitas tentativas. Aguarde 15 minutos.';
+    else if(r.status===401)$('#e1').textContent='Usuário ou senha incorretos.';
+    else $('#e1').textContent='Login não configurado no Vercel (veja as variáveis de ambiente).';
+  }catch(_){$('#e1').textContent='Sem conexão. Tente de novo.'}
+});
+setInterval(()=>{if(!$('#panel').hidden&&!document.hidden)load()},30000);
+load();
+</script>
+</body>
+</html>
